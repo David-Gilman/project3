@@ -1,4 +1,4 @@
-#remote - - [13/Feb/1995:10:48:26 -0700] "GET index.html HTTP/1.0" 200 9902
+#iremote - - [13/Feb/1995:10:48:26 -0700] "GET index.html HTTP/1.0" 200 9902
 #local - - [24/Oct/1994:13:41:41 -0600] "GET index.html HTTP/1.0" 200 150
 import datetime
 
@@ -13,7 +13,8 @@ while True:
 requests = 0
 unsuccess = 0
 redirect = 0
-log = []
+weeks = 0
+months = 0
 files = {}
 
 for line in fo:
@@ -24,10 +25,9 @@ for line in fo:
 		else: files[line.split()[6]] = 1
 		requests+=1
 	except:
-#		print(line)
 		pass
-#	break
-#	log.append(line[11:37],)
+
+
 print("Total valid requests: " + str(requests))
 print("Unsucesful requests: " + str(unsuccess))
 print("Redirected requests: " + str(redirect))
