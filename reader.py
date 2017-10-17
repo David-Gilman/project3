@@ -2,6 +2,7 @@
 import datetime
 import re
 import calendar
+import time
 
 while True:
 	try:
@@ -24,20 +25,23 @@ files = {}
 weekday = {}
 for i in range(0,7):
 	weekday[i] = 0
-conv = {v: k for k,v in enumerate(calendar.month_abbr)}
+conv = dict((v,k) for k,v in enumerate(calendar.month_abbr)) 
+reg = re.compile('.*\[([^:]*):(.*) \-\d{3,4}\].*')
 
 for line in fo:
-	try:
+#	try:
 		if line.split()[8][0] == "4": unsuccess+=1
 		elif line.split()[8][0] == "3": redirect+=1 
 		if line.split()[6] in files: files[line.split()[6]]+=1
 		else: files[line.split()[6]] = 1
 		requests+=1
-		event = datetime(int((re.split('[/ :]',line.split()[3])[2])),conv[re.split('[/ :]',(line.split()[3])[1])],int((re.split('[/ :]',line.split()[0])[2])))
+		#event = time.strptime(reg.match(line))
+		print(re.split('[/ :]',(line.split()[3])))
+		event = datetime(int((re.split('[/ :]',line.split()[3])[2])),conv[re.split('[/ :]',(line.split()[3])[1])][0],int((re.split('[/ :]',line.split()[0])[2])))
 		print(event)
 		weekday[event.weekday()] = weekday[event.weekday()] + 1 
-	except:
-		pass
+	#except:
+#		pass
 
 
 print("Total requests: " + str(requests))
