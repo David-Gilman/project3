@@ -1,6 +1,6 @@
 #iremote - - [13/Feb/1995:10:48:26 -0700] "GET index.html HTTP/1.0" 200 9902
-#local - - [24/Oct/1994:13:41:41 -0600] "GET index.html HTTP/1.0" 200 150
 import datetime
+import re
 
 while True:
 	try:
@@ -16,6 +16,9 @@ redirect = 0
 weeks = 0
 months = 0
 files = {}
+weekday = {}
+for i in range(0,7):
+	weekday[i] = 0
 
 for line in fo:
 	try:
@@ -24,14 +27,17 @@ for line in fo:
 		if line.split()[6] in files: files[line.split()[6]]+=1
 		else: files[line.split()[6]] = 1
 		requests+=1
+		date = datetime.datetime(int(line.split()[3].re.split('/:')[3]))
+		weekday[date.weekday()] = files[date.weekday()] + 1  
 	except:
 		pass
 
 
-print("Total valid requests: " + str(requests))
-print("Unsucesful requests: " + str(unsuccess))
+print("Total requests: " + str(requests))
+print("Unsucesful requests: " + str(round((unsuccess/requests),4)*100) + "%")
 print("Redirected requests: " + str(redirect))
 print("Most requested file: " + max(files, key=files.get))
 print("Least requested file: " + min(files, key=files.get))
+print(weekday)
 
 fo.close()
